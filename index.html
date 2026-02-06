@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menú Digital - El Ajicito</title>
+    <style>
+        :root {
+            --primary: #ff4d00;
+            --gold: #ffcc00;
+            --dark: #1a1a1a;
+            --gray: #2d2d2d;
+            --white: #ffffff;
+            --whatsapp: #25D366;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background-color: var(--dark);
+            color: var(--white);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        header {
+            width: 100%;
+            background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=500&q=60');
+            background-size: cover;
+            padding: 30px 0;
+            text-align: center;
+            border-bottom: 4px solid var(--primary);
+        }
+
+        .logo h1 { color: var(--gold); margin: 0; font-size: 2.2rem; text-transform: uppercase; letter-spacing: 2px; }
+        
+        .container { width: 90%; max-width: 400px; padding: 20px 0 100px 0; }
+
+        /* --- NUEVA GALERÍA --- */
+        .gallery-title { color: var(--gold); text-align: center; margin: 20px 0; font-size: 1.4rem; }
+        .gallery-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 30px; }
+        .gallery-item { width: 100%; height: 120px; border-radius: 10px; object-fit: cover; border: 2px solid var(--gray); }
+
+        .item-card {
+            background-color: var(--gray);
+            border-radius: 15px;
+            margin-bottom: 20px;
+            overflow: hidden;
+            border: 1px solid #3d3d3d;
+        }
+
+        .item-info { padding: 15px; }
+        .item-title { font-size: 1.1rem; font-weight: bold; color: var(--gold); }
+        .item-price { font-size: 1.3rem; font-weight: bold; margin: 10px 0; display: block; }
+
+        .btn-whatsapp {
+            display: block;
+            background-color: var(--whatsapp);
+            color: white;
+            text-align: center;
+            padding: 12px;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 8px;
+        }
+
+        /* --- CHAT BOT --- */
+        #ai-chat-container { position: fixed; bottom: 20px; right: 20px; z-index: 1000; }
+        #chat-window { 
+            display: none; width: 290px; background: white; border-radius: 15px; 
+            box-shadow: 0 5px 25px rgba(0,0,0,0.4); margin-bottom: 15px; 
+            overflow: hidden; border: 1px solid #ddd; 
+        }
+        .chat-header { background: var(--primary); color: white; padding: 15px; font-weight: bold; display: flex; justify-content: space-between; align-items: center; }
+        #chat-content { height: 260px; padding: 15px; overflow-y: auto; color: #333; font-size: 0.85rem; }
+        .chat-input-area { padding: 10px; border-top: 1px solid #eee; display: flex; }
+        .chat-input-area input { flex: 1; border: 1px solid #ddd; border-radius: 5px; padding: 10px; color: #333; }
+        .chat-btn-send { background: var(--primary); color: white; border: none; padding: 0 15px; margin-left: 5px; border-radius: 5px; cursor: pointer; }
+        .floating-btn { width: 60px; height: 60px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 28px; border: 2px solid white; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">
+            <h1>EL AJICITO</h1>
+            <p>Sabor que une a todo Lima 🇵🇪</p>
+        </div>
+    </header>
+
+    <div class="container">
+        
+        <h2 class="gallery-title">📸 Nuestra Especialidad</h2>
+        <div class="gallery-grid">
+            <img class="gallery-item" src="https://images.unsplash.com/photo-1598103442097-8b74394b95c6?w=200" alt="Pollo">
+            <img class="gallery-item" src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=200" alt="Plato">
+            <img class="gallery-item" src="https://images.unsplash.com/photo-1563379091339-03b21bc4a4f8?w=200" alt="Comida">
+            <img class="gallery-item" src="https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=200" alt="Sabor">
+        </div>
+
+        <div class="item-card">
+            <div class="item-info">
+                <div class="item-title">Pollo a la Brasa Familiar</div>
+                <div class="item-price">S/ 65.90</div>
+                <a href="https://wa.me/51952781479?text=Hola! Quiero el Pollo a la Brasa Familiar" class="btn-whatsapp">Pedir por WhatsApp</a>
+            </div>
+        </div>
+
+        <div class="item-card">
+            <div class="item-info">
+                <div class="item-title">Lomo Saltado con Huancaína</div>
+                <div class="item-price">S/ 42.00</div>
+                <a href="https://wa.me/51952781479?text=Hola! Quiero el Lomo Saltado con Huancaína" class="btn-whatsapp">Pedir por WhatsApp</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="ai-chat-container">
+        <div id="chat-window">
+            <div class="chat-header">
+                <span>🤖 Asistente El Ajicito</span>
+                <span onclick="toggleChat()" style="cursor:pointer;">×</span>
+            </div>
+            <div id="chat-content">
+                <p><strong>IA:</strong> ¡Hola! ¿Deseas ver más fotos o tienes alguna duda con el menú? 😊</p>
+            </div>
+            <div class="chat-input-area">
+                <input id="user-input" type="text" placeholder="Escribe aquí...">
+                <button class="chat-btn-send" onclick="sendMessage()">></button>
+            </div>
+        </div>
+        <div class="floating-btn" onclick="toggleChat()">🤖</div>
+    </div>
+
+    <script>
+        function toggleChat() {
+            var chat = document.getElementById('chat-window');
+            chat.style.display = (chat.style.display === "none" || chat.style.display === "") ? "block" : "none";
+        }
+
+        function sendMessage() {
+            var input = document.getElementById('user-input');
+            var content = document.getElementById('chat-content');
+            if (input.value.trim() !== "") {
+                content.innerHTML += '<p style="text-align:right;"><strong>Tú:</strong> ' + input.value + '</p>';
+                var userMsg = input.value.toLowerCase();
+                input.value = "";
+                
+                setTimeout(function() {
+                    var response = "¡Claro! Atendemos de Lunes a Domingo. Si quieres pedir, dale al botón verde. 🍗";
+                    if(userMsg.includes("foto") || userMsg.includes("ver")) {
+                        response = "¡Arriba tienes nuestra galería! Todo sale calientito y al momento. 🔥";
+                    }
+                    content.innerHTML += '<p><strong>IA:</strong> ' + response + '</p>';
+                    content.scrollTop = content.scrollHeight;
+                }, 600);
+            }
+        }
+    </script>
+</body>
+</html>
