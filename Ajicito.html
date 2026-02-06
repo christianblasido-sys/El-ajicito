@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menú Digital - El Ajicito</title>
+    <style>
+        :root {
+            --primary: #ff4d00;
+            --gold: #ffcc00;
+            --dark: #1a1a1a;
+            --gray: #2d2d2d;
+            --white: #ffffff;
+            --whatsapp: #25D366;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background-color: var(--dark);
+            color: var(--white);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        header {
+            width: 100%;
+            background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=500&q=60');
+            background-size: cover;
+            padding: 30px 0;
+            text-align: center;
+            border-bottom: 4px solid var(--primary);
+        }
+
+        .logo h1 { color: var(--gold); margin: 0; font-size: 2.2rem; text-transform: uppercase; letter-spacing: 2px; }
+        .logo p { margin: 5px 0; font-size: 0.9rem; opacity: 0.8; }
+
+        .container { width: 90%; max-width: 400px; padding: 20px 0 100px 0; }
+
+        .item-card {
+            background-color: var(--gray);
+            border-radius: 15px;
+            margin-bottom: 20px;
+            overflow: hidden;
+            border: 1px solid #3d3d3d;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+
+        .item-info { padding: 15px; }
+        .item-title { font-size: 1.1rem; font-weight: bold; color: var(--gold); }
+        .item-price { font-size: 1.3rem; font-weight: bold; margin: 10px 0; display: block; }
+
+        .btn-whatsapp {
+            display: block;
+            background-color: var(--whatsapp);
+            color: white;
+            text-align: center;
+            padding: 12px;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 8px;
+        }
+
+        /* --- CHAT BOT --- */
+        #ai-chat-container { position: fixed; bottom: 20px; right: 20px; z-index: 1000; }
+        #chat-window { 
+            display: none; width: 290px; background: white; border-radius: 15px; 
+            box-shadow: 0 5px 25px rgba(0,0,0,0.4); margin-bottom: 15px; 
+            overflow: hidden; border: 1px solid #ddd; 
+        }
+        .chat-header { background: var(--primary); color: white; padding: 15px; font-weight: bold; display: flex; justify-content: space-between; align-items: center; }
+        #chat-content { height: 260px; padding: 15px; overflow-y: auto; color: #333; font-size: 0.85rem; background: #fdfdfd; }
+        .chat-input-area { padding: 10px; border-top: 1px solid #eee; display: flex; background: white; }
+        .chat-input-area input { flex: 1; border: 1px solid #ddd; border-radius: 5px; padding: 10px; outline: none; color: #333; }
+        .chat-btn-send { background: var(--primary); color: white; border: none; padding: 0 15px; margin-left: 5px; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        .floating-btn { 
+            width: 60px; height: 60px; background: var(--primary); border-radius: 50%; 
+            display: flex; align-items: center; justify-content: center; 
+            cursor: pointer; box-shadow: 0 4px 20px rgba(255, 77, 0, 0.5); border: 2px solid white; 
+            font-size: 28px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">
+            <h1>EL AJICITO</h1>
+            <p>Sabor que une a todo Lima 🇵🇪</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="item-card">
+            <div class="item-info">
+                <div class="item-title">Pollo a la Brasa Familiar</div>
+                <div class="item-price">S/ 65.90</div>
+                <a href="https://wa.me/51952781479?text=Hola! Quiero el Pollo a la Brasa Familiar" class="btn-whatsapp">Pedir por WhatsApp</a>
+            </div>
+        </div>
+
+        <div class="item-card">
+            <div class="item-info">
+                <div class="item-title">Lomo Saltado con Huancaína</div>
+                <div class="item-price">S/ 42.00</div>
+                <a href="https://wa.me/51952781479?text=Hola! Quiero el Lomo Saltado con Huancaína" class="btn-whatsapp">Pedir por WhatsApp</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="ai-chat-container">
+        <div id="chat-window">
+            <div class="chat-header">
+                <span>🤖 Asistente El Ajicito</span>
+                <span onclick="toggleChat()" style="cursor:pointer; padding: 5px;">×</span>
+            </div>
+            <div id="chat-content">
+                <p><strong>IA:</strong> ¡Hola! Bienvenido a <b>El Ajicito</b>. Soy tu asistente virtual. ¿Qué se te antoja hoy? 😊</p>
+            </div>
+            <div class="chat-input-area">
+                <input id="user-input" type="text" placeholder="Escribe aquí...">
+                <button class="chat-btn-send" onclick="sendMessage()">></button>
+            </div>
+        </div>
+        <div class="floating-btn" role="button" onclick="toggleChat()">🤖</div>
+    </div>
+
+    <script>
+        function toggleChat() {
+            var chat = document.getElementById('chat-window');
+            if (chat.style.display === "none" || chat.style.display === "") {
+                chat.style.display = "block";
+            } else {
+                chat.style.display = "none";
+            }
+        }
+
+        function sendMessage() {
+            var input = document.getElementById('user-input');
+            var content = document.getElementById('chat-content');
+            
+            if (input.value.trim() !== "") {
+                var text = input.value;
+                var userMsg = text.toLowerCase();
+                
+                content.innerHTML += '<p style="text-align:right; background: #e3effd; padding: 10px; border-radius: 12px; margin-left: 20px; color: #333; margin-bottom: 10px;"><strong>Tú:</strong> ' + text + '</p>';
+                input.value = "";
+                
+                setTimeout(function() {
+                    var response = "¡Buena elección! Déjame ayudarte... 👨‍🍳";
+
+                    // RESPUESTA DE VENTA DIRECTA CON TU LINK
+                    if(userMsg.includes("pollo") || userMsg.includes("lomo") || userMsg.includes("quiero") || userMsg.includes("pedir") || userMsg.includes("dame")) {
+                        response = "¡Excelente! Para confirmar tu pedido y tomar tu dirección, dale click aquí: <br><br><a href='https://wa.me/51952781479?text=Hola! Quiero confirmar mi pedido' style='color:green; font-weight:bold;'>[CONFIRMAR EN WHATSAPP]</a>";
+                    } 
+                    else if(userMsg.includes("pago") || userMsg.includes("metodo") || userMsg.includes("yape")) {
+                        response = "Aceptamos Yape, Plin y todas las tarjetas. ¡Tú eliges! 💳";
+                    } 
+                    else if(userMsg.includes("delivery") || userMsg.includes("envio")) {
+                        response = "¡Sí! Llegamos a todo Lima. El costo depende de tu zona. 🛵";
+                    }
+
+                    content.innerHTML += '<p style="background: #eee; padding: 10px; border-radius: 12px; margin-right: 20px; color: #333; margin-bottom: 10px;"><strong>IA:</strong> ' + response + '</p>';
+                    content.scrollTop = content.scrollHeight;
+                }, 600);
+            }
+        }
+
+        document.getElementById("user-input").addEventListener("keyup", function(event) {
+            if (event.key === "Enter") { sendMessage(); }
+        });
+    </script>
+</body>
+</html>
